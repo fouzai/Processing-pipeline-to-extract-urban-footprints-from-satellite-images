@@ -13,10 +13,12 @@ Le but de ce projet est de développer une chaine de traitement URBATEX à parti
  * Images Sentinel S2
  
 # Sommaire : 
-## Méthode de désennuagement :
-
- * Creation_masque_nuage : Nous avons créé les masques de nuages pour nos données Landsat et Sentinel S2.  
- * GapFilling_et_Image_Composite : Nous avons testé 2 méthodes de désenuagement.
+### Méthode de désennuagement :
+ * Calcul_pourcentage_nuage : Calcul du pourcentage de nuage sur les zones urbaines.
+ * Creation_Masque_Nuage_Landsat : Création des masques de nuage pour les données Landsat.  
+ * Creation_Masque_Nuage_SentinelS2_MAJA : Création des masques de nuage pour les données Sentinel S2 MAJA. 
+ * TimeSerieImageGapFilling_SentinelS2 : Création d'une image sans nuages avec la méthode du GapFilling.
  
 ## Extraction de la Tache urbaine :  
- * 
+ * Extraction_Zone_Urbaine : Extraction de la zone urbaine à l'aide de l'algorithme de texture fototex.
+ 
