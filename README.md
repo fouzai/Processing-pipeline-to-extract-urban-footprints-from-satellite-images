@@ -7,7 +7,7 @@ Le but de ce projet est de développer une chaine de traitement URBATEX à parti
 
 11 Villes retenues : elles correspondent à 3 contextes géographiques :
 
-![Zone d'étude](/home/fouzai/Bureau/forge_ird/progysat/zone_étude.png)
+![Zone d'étude](/home/fouzai/Bureau/forge_ird/progysat/zone_etude.png)
 
 
 # Données utilisées :
