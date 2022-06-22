@@ -7,6 +7,8 @@ Le but de ce projet est de développer une chaine de traitement URBATEX à parti
 
 11 Villes retenues : elles correspondent à 3 contextes géographiques :
 
+![Zone d'étude](/home/fouzai/Comparaison_WASP_GF_COMP/présentation/zone_étude.png)
+
 
 # Données utilisées :
  * Images Landsat 4/5, 7 et 8
