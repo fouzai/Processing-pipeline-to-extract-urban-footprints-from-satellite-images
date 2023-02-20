@@ -7,7 +7,7 @@ import rasterio
 from os.path import join, basename
 from rasterio import features
 import numpy.ma as ma
-
+import pandas as pd
 def calc_p_nuages_landsat(dataset, polygone):
     """ Calculer le pourcentage de nuage sur une zone
     dataset : chemin vers raster data
@@ -137,25 +137,43 @@ def attr_qb(path_tif):
     return dict_qb
 
 
-# Activer fiona driver pour KML / KMZ
-gpd.io.file.fiona.drvsupport.supported_drivers["LIBKML"] = 'r'
-# chemin vers les données d'entrées
-directory = "/home/fouzai/chaineTraitement/test/"
+def extraire_date(prodid):
+    date1 = prodid
+    return({
+        'dateprod': date1[11:19],
+        'yearprod': date1[11:15],
+        'monthprod': date1[15:17]})
 
-geom_path = [f for f in listdir(directory) if f.lower().endswith("kmz")][0]
-print(join(directory, geom_path))
-# charger la zone d'interet
-aoi = join(directory, geom_path)
 
-# trouver tout les rasters
-files = os.listdir(directory)
-tifs = [filename for filename in files if filename.lower().endswith("tif")]
-# calculer les pourcentages
-# charger l'image
-for i in range(len(tifs)):
-    # print(join(directory,tifs[i]))
-    path = join(directory, tifs[i])
-    surf = calc_p_nuages_sentinel2(path, aoi)
-    print(tifs[i], surf)
+
+
+
+def calc_p_nuages_sentinel2_csv(input_dir,geom_path) :
+    """"Calculer le pourcentage de nuage sur une zone d interet et sauvegarder le resultat dans un fichier xlsx
+    input_dir : chemin vers le dossier qui contient les masques de nuage
+    geom_path : le chemin vers le polygone en kmz
+    """
+    # Activer fiona driver pour KML / KMZ
+    gpd.io.file.fiona.drvsupport.supported_drivers["LIBKML"] = 'r'
+    aoi = geom_path
+    files = os.listdir(input_dir)
+    tifs = [filename for filename in files if filename.lower().endswith("tif")]
+    df = pd.DataFrame(columns=['identifiant_image', 'dateprod', 'yearprod', 'monthprod', 'surface_totale', 'syrface_nuage','pourcentage_nuage'])
+    for i in range(len(tifs)):
+        # print(join(directory,tifs[i]))
+        path = join(input_dir, tifs[i])
+        surf = calc_p_nuages_sentinel2(path, aoi)
+        # print(tifs[i], surf)
+        # print(extraire_date(tifs[i]))
+        # new_row = [tifs[i],]
+        k = extraire_date(tifs[i])
+        pource = (surf[1] / surf[0]) * 100
+        new_row = [tifs[i], k["dateprod"], k["yearprod"], k["monthprod"], surf[0], surf[1], pource]
+        df.loc[len(df)] = new_row
+
+    pth_export = join(input_dir, "pourcentage_nuage.xlsx")
+    df.to_excel(pth_export)
+    return (pth_export)
+
 
 
