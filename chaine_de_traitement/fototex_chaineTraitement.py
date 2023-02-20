@@ -36,7 +36,8 @@ def foto_traitement(input_raster, w_size_f, methode_foto, w_size_v, threshold):
     print("Calcul variance OK", output_variance)
 
     import otbApplication
-    output_traitement = os.getcwd() + '/tache_urbaine.tif'
+    #output_traitement = os.getcwd() + '/tache_urbaine.tif'
+    output_traitement = image_file[:-4] + '_tache_urbaine.tif'
     print(" traitement chemin ", output_traitement)
     ch1 = "im1b1 >= " + str(threshold) + " ? 1 : 0 "
     app = otbApplication.Registry.CreateApplication("BandMath")
