@@ -128,7 +128,7 @@ def GapFilling(image_directory, mask_directory, output_file, output_date):
     output_date : chemin vers un fichier texte avec la date de sortie YYMMDD
     """
     image_stack1, image_stack2, image_stack3 = create_stack_raster(image_directory)
-    print("image stack 2 ", image_stack2)
+    print("image stack :  ", image_stack2)
     mask_stack = create_stack_raster(mask_directory)
     input_date = date_output(image_stack2, output_file)
     output_file_gap = join(output_file, 'gapfilling.tif')
@@ -155,5 +155,5 @@ def GapFilling(image_directory, mask_directory, output_file, output_date):
     os.remove(image_stack1)
     os.remove(mask_stack[0])
 
-    return ("Synthèse d'image créé : ", output_file_gap)
+    return (output_file_gap)
 

@@ -19,7 +19,7 @@ def chaineTraitement(input_image, input_mask, output_file, resultat_file, aoi, o
     if (pnuage_min < 5 ) :
         gapfilling_path = GapFilling(input_image, output_file, resultat_file, output_date)
 
-        foto_traitement(gapfilling_path, wsize_f, meth_foto, wsize_v, threshold)
+        foto_traitement(gapfilling_path,resultat_file, wsize_f, meth_foto, wsize_v, threshold)
         print(" resultat OK")
     else :
         print(" pas de Gapfilling")
@@ -43,7 +43,7 @@ def chaineTraitement(input_image, input_mask, output_file, resultat_file, aoi, o
         if (band == 1 ) :
             path_image = join(input_image, file_image[0])
             print(path_image)
-            foto_traitement(path_image, wsize_f, meth_foto, wsize_v, threshold)
+            foto_traitement(path_image,resultat_file, wsize_f, meth_foto, wsize_v, threshold)
             print(" resultat OK")
 
         else :
@@ -52,7 +52,7 @@ def chaineTraitement(input_image, input_mask, output_file, resultat_file, aoi, o
             ch_identifiant_final = ch_identifiant + '_FRE_B'+b+'.tif'
             path_image = join(input_image,ch_identifiant_final)
             print(path_image)
-            foto_traitement(path_image, wsize_f, meth_foto, wsize_v, threshold)
+            foto_traitement(path_image,resultat_file, wsize_f, meth_foto, wsize_v, threshold)
 
 
 

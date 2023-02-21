@@ -4,10 +4,33 @@ from fototex.foto_tools import degrees_to_cardinal
 import numpy as np
 from matplotlib import pyplot as plt
 from skimage import io
+import otbApplication
+def operation_morphologique(input_raster,type_op,r) :
+    """"appliquer des operation morphologique à un raster
+    input_raster : chemin vers un raster
+    type_op : le type de l opertation morphologique :  dilate ou erode ou opening ou closing
+    """
+    path_tempo = input_raster[:-4]+'_'+ type_op + ".tif"
 
-def foto_traitement(input_raster, w_size_f, methode_foto, w_size_v, threshold):
+
+    app = otbApplication.Registry.CreateApplication("BinaryMorphologicalOperation")
+
+    app.SetParameterString("in", input_raster)
+    app.SetParameterString("out", path_tempo)
+    app.SetParameterInt("channel", 1)
+    app.SetParameterInt("xradius", r)
+    app.SetParameterInt("yradius", r)
+    app.SetParameterString("filter", type_op)
+
+    app.ExecuteAndWriteOutput()
+
+    return path_tempo
+
+
+def foto_traitement(input_raster, output_directory, w_size_f, methode_foto, w_size_v, threshold):
     """" traitement des sortie de fototex pour détécter la tahce urbaine
     input_raster : chemin vers le raster
+    output_directory : dossier de sortie pour sauvegarder les résultats
     w_size_f : taille de la fenetre d'analyse de fototex
     methode_f : methode de fototex : block ou moving_window
     w_size_v : taille de la fenetre pour calculer la variance
@@ -19,11 +42,12 @@ def foto_traitement(input_raster, w_size_f, methode_foto, w_size_v, threshold):
     foto_obj = Foto(image_file, band=1, method=methode_foto, in_memory=True)
 
     foto_obj.run(window_size=w_size_f, keep_dc_component=False)
+    foto_obj.out_dir = output_directory
     foto_obj.save_rgb()
     raster = io.imread(foto_obj.rgb_file)
 
-    import otbApplication
-    output_variance = os.getcwd() + '/variance.tif'
+
+    output_variance = foto_obj.rgb_file[:-4] + '_variance.tif'
     ch = 'var(im1b1N' + str(w_size_v) + 'x' + str(w_size_v) + ')'
     app = otbApplication.Registry.CreateApplication("BandMathX")
 
@@ -35,9 +59,9 @@ def foto_traitement(input_raster, w_size_f, methode_foto, w_size_v, threshold):
 
     print("Calcul variance OK", output_variance)
 
-    import otbApplication
+
     #output_traitement = os.getcwd() + '/tache_urbaine.tif'
-    output_traitement = image_file[:-4] + '_tache_urbaine.tif'
+    output_traitement = foto_obj.rgb_file[:-4] + '_tache_urbaine.tif'
     print(" traitement chemin ", output_traitement)
     ch1 = "im1b1 >= " + str(threshold) + " ? 1 : 0 "
     app = otbApplication.Registry.CreateApplication("BandMath")
@@ -48,6 +72,10 @@ def foto_traitement(input_raster, w_size_f, methode_foto, w_size_v, threshold):
 
     app.ExecuteAndWriteOutput()
     os.remove(output_variance)
-    return ("tache urbaine : ", output_traitement)
+
+    output_dilate = operation_morphologique(output_traitement,"dilate",5)
+    output_finale = operation_morphologique(output_dilate,"erode",2)
+
+    return ("tache urbaine : ", output_finale)
 
 
