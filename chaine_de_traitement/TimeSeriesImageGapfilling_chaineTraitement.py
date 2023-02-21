@@ -58,7 +58,7 @@ def nombreBand(files):
     occ = []
     for i in range(len(files)):
         if (files[i].lower().endswith('tif')):
-            if (files[i].lower().startswith('sentinel2a')):
+            if (files[i].lower().startswith('sentinel2')):
                 list_stack.append(files[i])
 
     for i in range(len(list_stack)):

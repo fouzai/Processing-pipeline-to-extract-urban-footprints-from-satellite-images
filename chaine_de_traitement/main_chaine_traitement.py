@@ -16,7 +16,7 @@ def chaineTraitement(input_image, input_mask, output_file, resultat_file, aoi, o
     df = pd.read_excel(csv_path,engine='openpyxl')
     pnuage_min = min(df['pourcentage_nuage'])
     print(pnuage_min)
-    if (pnuage_min < 5 ) :
+    if (pnuage_min > 5 ) :
         gapfilling_path = GapFilling(input_image, output_file, resultat_file, output_date)
 
         foto_traitement(gapfilling_path,resultat_file, wsize_f, meth_foto, wsize_v, threshold)
