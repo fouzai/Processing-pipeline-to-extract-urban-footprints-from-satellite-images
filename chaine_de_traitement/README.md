@@ -38,9 +38,9 @@ fototex_chaineTraitement(input_raster, output_directory, w_size_f, methode_foto,
  
 # CHAINE DE TRAITEMENT :  
 ## USAGE : 
-int main()
-{
-    printf("Hello world!\n");
-    return 0;
-}
- 
+
+```
+print ("hello world")
+
+```
+
