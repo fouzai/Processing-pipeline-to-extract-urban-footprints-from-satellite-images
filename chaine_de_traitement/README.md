@@ -2,12 +2,10 @@
 PROGYSAT s’inscrit dans le cadre du financement européen du Programme de Coopération Interreg Amazonie (PCIA) qui participe au développement intégré de la Guyane Française et de ses voisins du Plateau des Guyanes – le Suriname, le Guyana, l’Amapá, le Pará et l’Amazonas.
 
 # Objectifs
-Le but de ce projet est de développer une chaine de traitement URBATEX à partir des données de télédétection pour le suivi des zones urbaines avec pour les 4 pays des informations comparables aux échelles :
+Le but de ce projet est de développer une chaine de traitement qui traite en entrée les données Landsat et Sentinel2 pour suivre et extraire les zones urbaines.
 
 
-11 Villes retenues : elles correspondent à 3 contextes géographiques :
-
-![Zone d'étude](zone_etude.png)
+![Chaine de Traitement](chaineTraitement.png)
 
 
 # Données utilisées :
