@@ -38,9 +38,38 @@ fototex_chaineTraitement(input_raster, output_directory, w_size_f, methode_foto,
  
 # CHAINE DE TRAITEMENT :  
 ## USAGE : 
+## Get started 
+Voici un exemple d'un script python pour faire tourner la chaine de traitement
+
+ÉTAPE 1 : Initialisation des paramètres d'entrées sorties 
+
 
 ```
-print ("hello world")
+from main_chaine_traitement import chaineTraitement
+w_size_foto = 11
+w_size_var = 21
+methode_foto = 'block'
+threshold = 0.3
+c_mask = 0b00010001
 
+# chemin vers les données d'entrées : les images
+input_directory ='/home/fouzai/chaineTraitement/test/'
+# chemin vers les données d'entrées : les masques CLM
+mask_directory ='/home/fouzai/chaineTraitement/clm_band/'
+# chemin vers la region d interet
+aoi = "/home/fouzai/chaineTraitement/Saint-Laurent-du-Maroni.kmz"
+# chemin vers le dossier de sortie
+output_directory = '/home/fouzai/chaineTraitement/res/'
+# chemin vers le dossier de masque binaire
+mask_directory1 ='/home/fouzai/chaineTraitement/mask/'
+# chemin vers le date de sortie
+output_date = "/home/fouzai/chaineTraitement/output.txt"
+
+
+```
+ÉTAPE 2 : Lancer la chaine de traitement 
+
+```
+chaineTraitement(input_directory,mask_directory,mask_directory1,output_directory, aoi, output_date, c_mask, w_size_foto, w_size_var, methode_foto, threshold)
 ```
 
