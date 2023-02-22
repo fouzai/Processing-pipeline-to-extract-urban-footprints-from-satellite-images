@@ -37,6 +37,10 @@ fototex_chaineTraitement(input_raster, output_directory, w_size_f, methode_foto,
 **Remarque :** Les differents modules de la chaine de traitement sont codés de tels sorte que chaque module peut etre utilisé séparément.
  
 # CHAINE DE TRAITEMENT :  
-# USAGE : 
-
+## USAGE : 
+int main()
+{
+    printf("Hello world!\n");
+    return 0;
+}
  
