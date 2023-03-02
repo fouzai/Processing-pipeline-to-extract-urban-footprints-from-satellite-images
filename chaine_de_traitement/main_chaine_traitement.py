@@ -8,9 +8,9 @@ from creation_masque_nuage_chaineTraitement import cloud_mask
 from calcul_pourcentage_nuage_chaineTraitement import calc_p_nuages_sentinel2_csv
 from file_configuration import s2_file_band, s2_file_clm
 
-def chaineTraitement(path, aoi, output_date, c_mask, wsize_f, wsize_v, meth_foto, threshold) :
+def chaineTraitement(path, aoi, output_date, c_mask, wsize_f, wsize_v, meth_foto, threshold,band) :
 
-    input_image = s2_file_band(path,[2,3])
+    input_image = s2_file_band(path,band)
     input_mask = s2_file_clm(path)
     output_file=cloud_mask(input_mask,c_mask)
     csv_path = calc_p_nuages_sentinel2_csv(output_file, aoi)
