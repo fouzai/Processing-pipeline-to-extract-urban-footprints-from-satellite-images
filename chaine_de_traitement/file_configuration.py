@@ -45,12 +45,12 @@ def s2_file_clm(file):
 
 
 
-    return pth_copy
+    return band_path
 
 
 
-path = "/home/fouzai/chaineTraitement/s2_maja"
-band = [2,4]
+#path = "/home/fouzai/chaineTraitement/s2_maja"
+#band = [2,4]
 #res=s2_file_band(path,band)
 #print(res)
-print(s2_file_clm(path))
+#print(s2_file_clm(path))

@@ -6,16 +6,22 @@ from TimeSeriesImageGapfilling_chaineTraitement import GapFilling
 from fototex_chaineTraitement import foto_traitement
 from creation_masque_nuage_chaineTraitement import cloud_mask
 from calcul_pourcentage_nuage_chaineTraitement import calc_p_nuages_sentinel2_csv
+from file_configuration import s2_file_band, s2_file_clm
 
+def chaineTraitement(path, aoi, output_date, c_mask, wsize_f, wsize_v, meth_foto, threshold) :
 
-def chaineTraitement(input_image, input_mask, output_file, resultat_file, aoi, output_date, c_mask, wsize_f, wsize_v, meth_foto, threshold) :
-
-    cloud_mask(input_mask, output_file,c_mask)
+    input_image = s2_file_band(path,[2,3])
+    input_mask = s2_file_clm(path)
+    output_file=cloud_mask(input_mask,c_mask)
     csv_path = calc_p_nuages_sentinel2_csv(output_file, aoi)
     print(csv_path)
     df = pd.read_excel(csv_path,engine='openpyxl')
     pnuage_min = min(df['pourcentage_nuage'])
     print(pnuage_min)
+
+    resultat_file = join(os.path.split(path)[0],"resultat")
+    os.mkdir(resultat_file)
+
     if (pnuage_min > 5 ) :
         gapfilling_path = GapFilling(input_image, output_file, resultat_file, output_date)
 

@@ -8,12 +8,14 @@ from os.path import join, basename
 from rasterio import features
 import numpy.ma as ma
 
-def cloud_mask(dataset,output,c_mask) :
+def cloud_mask(dataset,c_mask) :
     """" creer un masque de nuage binaire
     dataset : directory vers les fichier CLM_Band pour sentinel 2 et fichier QA_pixel pour Landsat
     output  : directory de sortie
     c_mask  : bit a masquer : exemple  0b00000010 pour sentinel2
     """
+    output = join(os.path.split(dataset)[0],"mask")
+    os.mkdir(output)
     files = os.listdir(dataset)
     tifs = [filename for filename in files if filename.lower().endswith("tif")]
     for i in range(len(tifs)) :
@@ -25,6 +27,8 @@ def cloud_mask(dataset,output,c_mask) :
         with rasterio.open(join(output,output_file), 'w', **kwds) as r_output:
             r_output.write(mask.astype(np.uint8),1)
         print(output_file + " est créé")
+
+    return output
 
 
 # chemin vers les données d'entrées
