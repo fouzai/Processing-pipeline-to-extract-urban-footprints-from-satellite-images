@@ -22,7 +22,7 @@ def chaineTraitement(path, aoi, output_date, c_mask, wsize_f, wsize_v, meth_foto
     resultat_file = join(os.path.split(path)[0],"resultat")
     os.mkdir(resultat_file)
 
-    if (pnuage_min > 5 ) :
+    if (pnuage_min > 1 ) :
         gapfilling_path = GapFilling(input_image, output_file, resultat_file, output_date)
 
         foto_traitement(gapfilling_path,resultat_file, wsize_f, meth_foto, wsize_v, threshold)
