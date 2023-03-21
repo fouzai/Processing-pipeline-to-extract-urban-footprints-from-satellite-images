@@ -2,13 +2,14 @@ import os
 import tarfile
 from os.path import join
 import os
+import datetime
 from calcul_pourcentage_nuage_chaineTraitement import lire_kmz
 import geopandas as gpd
 import numpy as np
 import tarfile
 from eodag import EODataAccessGateway
 from shapely.geometry import Polygon
-geom = Polygon([[-52.25436024547791, 4.849005730128553], [-52.2342066128699, 4.87897079785489], [-52.25031858914861, 4.915304055969233], [-52.2947305585838, 4.957712521390143], [-52.3434865363878, 4.94774305865965],[-52.36586445923182,4.902414519442758],[-52.33985767679302,4.838700417255624],[-52.25436024547791 ,4.849005730128553 ]])
+#geom = Polygon([[-52.25436024547791, 4.849005730128553], [-52.2342066128699, 4.87897079785489], [-52.25031858914861, 4.915304055969233], [-52.2947305585838, 4.957712521390143], [-52.3434865363878, 4.94774305865965],[-52.36586445923182,4.902414519442758],[-52.33985767679302,4.838700417255624],[-52.25436024547791 ,4.849005730128553 ]])
 #gpd.io.file.fiona.drvsupport.supported_drivers["LIBKML"] = 'rw'
 #geom = lire_kmz('/home/fouzai/Téléchargements/kmz_jpg_Gutemberg/Gutemberg/Cayenne.kml')
 #map = gpd.read_file('/home/fouzai/Téléchargements/kmz_jpg_Gutemberg/Gutemberg/Cayenne.kml')
@@ -40,8 +41,29 @@ def landsat_download(file, s_date, e_date, ROI) :
 
     dag = EODataAccessGateway()
 
-    search_results, total_count = dag.search(productType="LANDSAT_C2L2", start=s_date, end=e_date,
-                                             geom=new_poly)
+    l8_date = datetime.datetime(2013, 04, 01)
+    yy = int(s_date[0:4])
+    mm = int(s_date[5:7])
+    dd = int(s_date[9:11])
+    date_download = datetime.datetime(yy, mm, dd)
+
+
+    if(date_download > l8_date) :
+        search_results, total_count = dag.search(productType="LANDSAT_C2L2", start=s_date, end=e_date,
+                                                 geom=new_poly)
+
+    else :
+        search_results, total_count = dag.search(productType="LANDSAT_TM_C2L2", start=s_date, end=e_date,
+                                                 geom=new_poly)
+
+
+
+
+
+
+
+
+
 
     print(search_results)
 

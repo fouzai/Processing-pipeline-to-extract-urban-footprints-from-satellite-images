@@ -5,15 +5,27 @@ import pandas as pd
 from TimeSeriesImageGapfilling_chaineTraitement import GapFilling
 from fototex_chaineTraitement import foto_traitement
 from creation_masque_nuage_chaineTraitement import cloud_mask
-from calcul_pourcentage_nuage_chaineTraitement import calc_p_nuages_sentinel2_csv
-from file_configuration import s2_file_band, s2_file_clm
+from calcul_pourcentage_nuage_chaineTraitement import calc_p_nuages_sentinel2_csv, calc_p_nuages_landsat_csv
+from file_configuration import s2_file_band, s2_file_clm, verif_sentinel, Landsat_file_qa, landsat_file_band
 
-def chaineTraitement(path, aoi, output_date, c_mask, wsize_f, wsize_v, meth_foto, threshold,band) :
+def chaineTraitement(path, aoi, output_date, wsize_f, wsize_v, meth_foto, threshold,band) :
 
-    input_image = s2_file_band(path,band)
-    input_mask = s2_file_clm(path)
-    output_file=cloud_mask(input_mask,c_mask)
-    csv_path = calc_p_nuages_sentinel2_csv(output_file, aoi)
+    bool = verif_sentinel(path)
+    if (bool) :
+        input_image = s2_file_band(path, band)
+        input_mask = s2_file_clm(path)
+        output_file = cloud_mask(input_mask)
+        csv_path = calc_p_nuages_sentinel2_csv(output_file, aoi)
+    else:
+        input_image = landsat_file_band(path, band)
+        input_mask = Landsat_file_qa(path)
+        output_file = cloud_mask(input_mask)
+        csv_path = calc_p_nuages_landsat_csv(output_file, aoi)
+
+
+
+
+
     print(csv_path)
     df = pd.read_excel(csv_path,engine='openpyxl')
     pnuage_min = min(df['pourcentage_nuage'])
@@ -22,7 +34,7 @@ def chaineTraitement(path, aoi, output_date, c_mask, wsize_f, wsize_v, meth_foto
     resultat_file = join(os.path.split(path)[0],"resultat")
     os.mkdir(resultat_file)
 
-    if (pnuage_min > 1 ) :
+    if (pnuage_min < 5 ) :
         gapfilling_path = GapFilling(input_image, output_file, resultat_file, output_date)
 
         foto_traitement(gapfilling_path,resultat_file, wsize_f, meth_foto, wsize_v, threshold)
@@ -33,32 +45,69 @@ def chaineTraitement(path, aoi, output_date, c_mask, wsize_f, wsize_v, meth_foto
         print ('au moins une image qui contient moins de 5% de nuage : ')
         print("l image qui contient le moins de nuages : ")
         print(df1.iloc[0]['identifiant_image'])
-        ch_identifiant = df1.iloc[0]['identifiant_image'] [:-16]
-        print(ch_identifiant)
-        files = os.listdir(input_image)
-        print(files)
-        band = 0
-        file_image = []
-        for i in range(len(files)) :
-            if (files[i].startswith(ch_identifiant)) :
-                print(files[i])
-                band = band + 1
-                file_image.append(files[i])
 
-        print(band)
-        if (band == 1 ) :
-            path_image = join(input_image, file_image[0])
-            print(path_image)
-            foto_traitement(path_image,resultat_file, wsize_f, meth_foto, wsize_v, threshold)
-            print(" resultat OK")
+        if(bool) :
+            ch_identifiant = df1.iloc[0]['identifiant_image'][:-16]
+            print(ch_identifiant)
+            files = os.listdir(input_image)
+            print(files)
+            band = 0
+            file_image = []
+            for i in range(len(files)):
+                if (files[i].startswith(ch_identifiant)):
+                    print(files[i])
+                    band = band + 1
+                    file_image.append(files[i])
+
+            print(band)
+            if (band == 1):
+                path_image = join(input_image, file_image[0])
+                print(path_image)
+                foto_traitement(path_image, resultat_file, wsize_f, meth_foto, wsize_v, threshold)
+                print(" resultat OK")
+
+            else:
+                print("traitement a venir")
+                b = input('traitement de la tache urbaine avec quelle bande ?')
+                ch_identifiant_final = ch_identifiant + '_FRE_B' + b + '.tif'
+                path_image = join(input_image, ch_identifiant_final)
+                print(path_image)
+                foto_traitement(path_image, resultat_file, wsize_f, meth_foto, wsize_v, threshold)
+
 
         else :
-            print("traitement a venir")
-            b = input('traitement de la tache urbaine avec quelle bande ?')
-            ch_identifiant_final = ch_identifiant + '_FRE_B'+b+'.tif'
-            path_image = join(input_image,ch_identifiant_final)
-            print(path_image)
-            foto_traitement(path_image,resultat_file, wsize_f, meth_foto, wsize_v, threshold)
+
+            ch_identifiant = df1.iloc[0]['identifiant_image'][:-18]
+            print(ch_identifiant)
+            files = os.listdir(input_image)
+            print(files)
+            band = 0
+            file_image = []
+            for i in range(len(files)):
+                if (files[i].startswith(ch_identifiant)):
+                    print(files[i])
+                    band = band + 1
+                    file_image.append(files[i])
+
+            print(band)
+            if (band == 1):
+                path_image = join(input_image, file_image[0])
+                print(path_image)
+                foto_traitement(path_image, resultat_file, wsize_f, meth_foto, wsize_v, threshold)
+                print(" resultat OK")
+
+            else:
+                print("traitement a venir")
+                b = input('traitement de la tache urbaine avec quelle bande ?')
+                ch_identifiant_final = ch_identifiant + '_SR_B' + b + '.TIF'
+                path_image = join(input_image, ch_identifiant_final)
+                print(path_image)
+                foto_traitement(path_image, resultat_file, wsize_f, meth_foto, wsize_v, threshold)
+
+
+
+
+
 
 
 

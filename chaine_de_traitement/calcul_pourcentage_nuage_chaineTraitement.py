@@ -51,7 +51,7 @@ def calc_p_nuages_landsat(dataset, polygone):
     ma_values, values_counts = np.unique(mw, return_counts=True)
     values = ma_values.compressed()
     values_counts = values_counts[~ma_values.mask]
-    is_cloud_shadow = apply_binary_mask(values, [0b0000001000011110])
+    is_cloud_shadow = apply_binary_mask(values, [0b00000001])
     nb_pixels_cloud_shadow = np.sum(values_counts[is_cloud_shadow])
     nb_pixels_data = np.sum(values_counts)
     return (nb_pixels_data, nb_pixels_cloud_shadow)
@@ -144,7 +144,12 @@ def extraire_date(prodid):
         'yearprod': date1[11:15],
         'monthprod': date1[15:17]})
 
-
+def extraire_date_landsat(prodid):
+    date1 = prodid
+    return({
+        'dateprod': date1[17:25],
+        'yearprod': date1[17:21],
+        'monthprod': date1[21:23]})
 
 
 
@@ -167,6 +172,37 @@ def calc_p_nuages_sentinel2_csv(input_dir,geom_path) :
         # print(extraire_date(tifs[i]))
         # new_row = [tifs[i],]
         k = extraire_date(tifs[i])
+        pource = (surf[1] / surf[0]) * 100
+        new_row = [tifs[i], k["dateprod"], k["yearprod"], k["monthprod"], surf[0], surf[1], pource]
+        df.loc[len(df)] = new_row
+
+    pth_export = join(input_dir, "pourcentage_nuage.xlsx")
+    df.to_excel(pth_export)
+    return (pth_export)
+
+
+
+
+
+def calc_p_nuages_landsat_csv(input_dir,geom_path) :
+    """"Calculer le pourcentage de nuage sur une zone d interet et sauvegarder le resultat dans un fichier xlsx
+    input_dir : chemin vers le dossier qui contient les masques de nuage
+    geom_path : le chemin vers le polygone en kmz
+    """
+    # Activer fiona driver pour KML / KMZ
+    gpd.io.file.fiona.drvsupport.supported_drivers["LIBKML"] = 'r'
+    aoi = geom_path
+    files = os.listdir(input_dir)
+    tifs = [filename for filename in files if filename.lower().endswith("tif")]
+    df = pd.DataFrame(columns=['identifiant_image', 'dateprod', 'yearprod', 'monthprod', 'surface_totale', 'surface_nuage','pourcentage_nuage'])
+    for i in range(len(tifs)):
+        # print(join(directory,tifs[i]))
+        path = join(input_dir, tifs[i])
+        surf = calc_p_nuages_landsat(path, aoi)
+        # print(tifs[i], surf)
+        # print(extraire_date(tifs[i]))
+        # new_row = [tifs[i],]
+        k = extraire_date_landsat(tifs[i])
         pource = (surf[1] / surf[0]) * 100
         new_row = [tifs[i], k["dateprod"], k["yearprod"], k["monthprod"], surf[0], surf[1], pource]
         df.loc[len(df)] = new_row
