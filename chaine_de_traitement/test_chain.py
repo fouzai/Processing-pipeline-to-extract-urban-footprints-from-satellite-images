@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+@author: youssef.fouzai@ird.fr
+"""
 from main_chaine_traitement import chaineTraitement
 from file_configuration import s2_file_band, s2_file_clm
 
