@@ -1,6 +1,7 @@
 from os import listdir
 from os.path import join
 
+
 def extract_xml_file(input_file) :
     """" retourner le chemin d'un fichier xml dans un dossier
     input_file : chemin vers un repertoire
@@ -8,8 +9,8 @@ def extract_xml_file(input_file) :
     files = listdir(input_file)
     for i in range(len(files)) :
         if files[i].lower().endswith(".xml") :
-            if(files[i].find("aux")== -1 or files[i].find("tif")== -1 ):
-                return (join(input_file,files[i]))
+            if files[i].find("aux")== -1 or files[i].find("tif")== -1:
+                return join(input_file,files[i])
 
 
 
@@ -18,8 +19,11 @@ dir = "/home/fouzai/chaineTraitement/s2_maja/SENTINEL2A_20200115-141049-119_L2A_
 #extract_xml_file(dir)
 #ch = extract_xml_file(dir)
 #print(ch)
+
+
 def xml_char(x):
     return (x[-49:-41])
+
 
 def return_path(directory) :
     """" creer une liste avec les chemins des fichiers xml
@@ -35,6 +39,7 @@ def return_path(directory) :
     path_xml_sorted = sorted(path_xml, key=xml_char, reverse=True)
 
     return path_xml_sorted
+
 
 def create_wasp_script(file, date_output, path_output) :
     """ creer le script pour faire tourner wasp

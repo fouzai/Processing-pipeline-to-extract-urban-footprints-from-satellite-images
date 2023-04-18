@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+@author: youssef.fouzai@ird.fr
+"""
+
 from os import listdir
 import geopandas as gpd
 from os.path import join
@@ -8,6 +14,8 @@ from os.path import join, basename
 from rasterio import features
 import numpy.ma as ma
 import pandas as pd
+
+
 def calc_p_nuages_landsat(dataset, polygone):
     """ Calculer le pourcentage de nuage sur une zone
     dataset : chemin vers raster data
@@ -54,7 +62,7 @@ def calc_p_nuages_landsat(dataset, polygone):
     is_cloud_shadow = apply_binary_mask(values, [0b00000001])
     nb_pixels_cloud_shadow = np.sum(values_counts[is_cloud_shadow])
     nb_pixels_data = np.sum(values_counts)
-    return (nb_pixels_data, nb_pixels_cloud_shadow)
+    return nb_pixels_data, nb_pixels_cloud_shadow
 
 
 def calc_p_nuages_sentinel2(dataset, polygone):
@@ -103,7 +111,7 @@ def calc_p_nuages_sentinel2(dataset, polygone):
     is_cloud_shadow = apply_binary_mask(values, [0b00010001])
     nb_pixels_cloud_shadow = np.sum(values_counts[is_cloud_shadow])
     nb_pixels_data = np.sum(values_counts)
-    return (nb_pixels_data, nb_pixels_cloud_shadow)
+    return nb_pixels_data, nb_pixels_cloud_shadow
 
 
 def lire_kmz(path_kmz):
@@ -120,7 +128,7 @@ def apply_binary_mask(values, compare_mask):
     compare_mask : masque binaire
     """
     values2 = np.bitwise_and(values, compare_mask)
-    return (values2 != 0)
+    return values2 != 0
 
 
 def attr_qb(path_tif):
@@ -144,6 +152,7 @@ def extraire_date(prodid):
         'yearprod': date1[11:15],
         'monthprod': date1[15:17]})
 
+
 def extraire_date_landsat(prodid):
     date1 = prodid
     return({
@@ -152,8 +161,7 @@ def extraire_date_landsat(prodid):
         'monthprod': date1[21:23]})
 
 
-
-def calc_p_nuages_sentinel2_csv(input_dir,geom_path) :
+def calc_p_nuages_sentinel2_csv(input_dir,geom_path):
     """"Calculer le pourcentage de nuage sur une zone d interet et sauvegarder le resultat dans un fichier xlsx
     input_dir : chemin vers le dossier qui contient les masques de nuage
     geom_path : le chemin vers le polygone en kmz
@@ -178,13 +186,10 @@ def calc_p_nuages_sentinel2_csv(input_dir,geom_path) :
 
     pth_export = join(input_dir, "pourcentage_nuage.xlsx")
     df.to_excel(pth_export)
-    return (pth_export)
+    return pth_export
 
 
-
-
-
-def calc_p_nuages_landsat_csv(input_dir,geom_path) :
+def calc_p_nuages_landsat_csv(input_dir,geom_path):
     """"Calculer le pourcentage de nuage sur une zone d interet et sauvegarder le resultat dans un fichier xlsx
     input_dir : chemin vers le dossier qui contient les masques de nuage
     geom_path : le chemin vers le polygone en kmz
@@ -209,7 +214,7 @@ def calc_p_nuages_landsat_csv(input_dir,geom_path) :
 
     pth_export = join(input_dir, "pourcentage_nuage.xlsx")
     df.to_excel(pth_export)
-    return (pth_export)
+    return pth_export
 
 
 

@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+@author: youssef.fouzai@ird.fr
+"""
 
 from os import listdir
 from os.path import join
@@ -15,19 +20,19 @@ def create_stack_raster(input_directory):
     """
 
     def last_4chars(x):
-        return (x[11:19])
+        return x[11:19]
 
     files = os.listdir(input_directory)
-    if (files[0].lower().startswith('se') and files[0].lower().endswith('tif') ) :
+    if files[0].lower().startswith('se') and files[0].lower().endswith('tif'):
         def last_4chars(x):
-            return (x[11:19])
+            return x[11:19]
 
         files = sorted(files, key=last_char)
         file = sorted(files, key=last_4chars)
 
         files1 = []
         for i in range(len(file)):
-            if (file[i].lower().endswith("tif")):
+            if file[i].lower().endswith("tif"):
                 files1.append(join(input_directory, file[i]))
 
         output_stack = join(input_directory, "stack.tif")
@@ -36,23 +41,22 @@ def create_stack_raster(input_directory):
         app.SetParameterString("out", output_stack)
         app.ExecuteAndWriteOutput()
         print("creation stack avec succes")
-        return (output_stack, file, files1)
+        return output_stack, file, files1
 
-
-    elif(files[0].lower().startswith('l') and files[0].lower().endswith('tif') ) :
-        def last_4chars(x) :
-            return (x[17:25])
+    elif files[0].lower().startswith('l') and files[0].lower().endswith('tif') :
+        def last_4chars(x):
+            return x[17:25]
 
         files = sorted(files, key=last_char)
         file = sorted(files, key=last_4chars)
 
         files1 = []
         for i in range(len(file)):
-            if (file[i].lower().endswith("tif")):
+            if file[i].lower().endswith("tif") :
                 files1.append(join(input_directory, file[i]))
 
-        if (len(files1)>1) :
-            for i in range(1,len(files1)):
+        if len(files1) > 1 :
+            for i in range(1, len(files1)):
                 app = otbApplication.Registry.CreateApplication("Superimpose")
 
                 app.SetParameterString("inr", files1[0])
@@ -61,9 +65,6 @@ def create_stack_raster(input_directory):
 
                 app.ExecuteAndWriteOutput()
 
-
-
-
         output_stack = join(input_directory, "stack.tif")
         app = otbApplication.Registry.CreateApplication("ConcatenateImages")
         app.SetParameterStringList("il", files1)
@@ -73,20 +74,17 @@ def create_stack_raster(input_directory):
         return (output_stack, file, files1)
 
 
-
-
-
 def extractId(ch):
     """"extraire un identifiant d'une image sentinel 2
     ch : identifiant de l image
     """
-    if (len(ch) == 59):
+    if len(ch) == 59 :
         id = ch[11:19]
-    return (int(id))
+    return int(id)
 
 
 def last_char(x):
-    return (x[54:55])
+    return x[54:55]
 
 
 def nombreBand(files):
@@ -98,8 +96,8 @@ def nombreBand(files):
     extract_id = []
     occ = []
     for i in range(len(files)):
-        if (files[i].lower().endswith('tif')):
-            if (files[i].lower().startswith('sentinel2')):
+        if files[i].lower().endswith('tif') :
+            if files[i].lower().startswith('sentinel2') :
                 list_stack.append(files[i])
 
     for i in range(len(list_stack)):
@@ -107,7 +105,7 @@ def nombreBand(files):
     for i in range(len(extract_id)):
         occ.append(op.countOf(extract_id, extract_id[i]))
     res = occ.count(occ[0]) == len(occ)
-    return (occ[0], res)
+    return occ[0], res
 
 
 def date_output(list_id, dossier):
@@ -116,10 +114,10 @@ def date_output(list_id, dossier):
     dossier : chemin vers le répertoire pour enregistrer le fichier texte
     """
     occ, res = nombreBand(list_id)
-    if (occ == 1):
+    if occ == 1 :
         dates = []
         for i in range(len(list_id)):
-            if (list_id[i].lower().endswith('tif') and list_id[i].lower().startswith('sentinel')):
+            if list_id[i].lower().endswith('tif') and list_id[i].lower().startswith('sentinel') :
                 date_time_str = list_id[i][11:19]
                 date_time_obj = datetime.datetime.strptime(date_time_str, '%Y%m%d')
                 dates.append(date_time_obj)
@@ -131,9 +129,9 @@ def date_output(list_id, dossier):
                 f.write(str(line)[0:4] + str(line)[5:7] + str(line)[8:10])
                 f.write('\n')
         print("creation fichier txt avec succes")
-        return (path_export)
+        return path_export
     else:
-        if (res):
+        if res :
             new_list_id = []
             for i in range(0, len(list_id), occ):
                 new_list_id.append(list_id[i])
@@ -141,7 +139,7 @@ def date_output(list_id, dossier):
             dates = []
             list_id = new_list_id
             for i in range(len(list_id)):
-                if (list_id[i].lower().endswith('tif') and list_id[i].lower().startswith('sentinel')):
+                if list_id[i].lower().endswith('tif') and list_id[i].lower().startswith('sentinel') :
                     date_time_str = list_id[i][11:19]
                     date_time_obj = datetime.datetime.strptime(date_time_str, '%Y%m%d')
                     dates.append(date_time_obj)
@@ -153,31 +151,22 @@ def date_output(list_id, dossier):
                     f.write(str(line)[0:4] + str(line)[5:7] + str(line)[8:10])
                     f.write('\n')
             print("creation fichier txt avec succes")
-            return (path_export1)
-
-
+            return path_export1
 
         else:
             print(" nombre de bande non equivalent, une ou plusieurs bandes manque")
 
 
-
-
-
-
-
-def extractId_landsat(ch):
+def extract_id_landsat(ch):
     """"extraire un identifiant d'une image sentinel 2
     ch : identifiant de l image
     """
-    if (len(ch) > 20):
+    if len(ch) > 20 :
         id = ch[17:25]
-    return (int(id))
+    return int(id)
 
 
-
-
-def nombreBand_landsat(files):
+def nombre_band_landsat(files):
     """"détérminer le nombre de bande des images dans un dossier
     files : répertoire des images
     """
@@ -186,16 +175,16 @@ def nombreBand_landsat(files):
     extract_id = []
     occ = []
     for i in range(len(files)):
-        if (files[i].lower().endswith('tif')):
-            if (files[i].lower().startswith('l')):
+        if files[i].lower().endswith('tif'):
+            if files[i].lower().startswith('l'):
                 list_stack.append(files[i])
 
     for i in range(len(list_stack)):
-        extract_id.append(extractId_landsat(list_stack[i]))
+        extract_id.append(extract_id_landsat(list_stack[i]))
     for i in range(len(extract_id)):
         occ.append(op.countOf(extract_id, extract_id[i]))
     res = occ.count(occ[0]) == len(occ)
-    return (occ[0], res)
+    return occ[0], res
 
 
 def date_output_landsat(list_id, dossier):
@@ -203,11 +192,11 @@ def date_output_landsat(list_id, dossier):
     list_id : une liste qui contient tous les identifiants des images
     dossier : chemin vers le répertoire pour enregistrer le fichier texte
     """
-    occ, res = nombreBand_landsat(list_id)
-    if (occ == 1):
+    occ, res = nombre_band_landsat(list_id)
+    if occ == 1:
         dates = []
         for i in range(len(list_id)):
-            if (list_id[i].lower().endswith('tif') and list_id[i].lower().startswith('l')):
+            if list_id[i].lower().endswith('tif') and list_id[i].lower().startswith('l'):
                 date_time_str = list_id[i][17:25]
                 date_time_obj = datetime.datetime.strptime(date_time_str, '%Y%m%d')
                 dates.append(date_time_obj)
@@ -219,9 +208,9 @@ def date_output_landsat(list_id, dossier):
                 f.write(str(line)[0:4] + str(line)[5:7] + str(line)[8:10])
                 f.write('\n')
         print("creation fichier txt avec succes")
-        return (path_export)
+        return path_export
     else:
-        if (res):
+        if res:
             new_list_id = []
             for i in range(0, len(list_id), occ):
                 new_list_id.append(list_id[i])
@@ -229,7 +218,7 @@ def date_output_landsat(list_id, dossier):
             dates = []
             list_id = new_list_id
             for i in range(len(list_id)):
-                if (list_id[i].lower().endswith('tif') and list_id[i].lower().startswith('l')):
+                if list_id[i].lower().endswith('tif') and list_id[i].lower().startswith('l'):
                     date_time_str = list_id[i][17:25]
                     date_time_obj = datetime.datetime.strptime(date_time_str, '%Y%m%d')
                     dates.append(date_time_obj)
@@ -241,16 +230,13 @@ def date_output_landsat(list_id, dossier):
                     f.write(str(line)[0:4] + str(line)[5:7] + str(line)[8:10])
                     f.write('\n')
             print("creation fichier txt avec succes")
-            return (path_export1)
-
-
+            return path_export1
 
         else:
             print(" nombre de bande non equivalent, une ou plusieurs bandes manque")
 
 
-
-def GapFilling(image_directory, mask_directory, output_file, output_date):
+def gap_filling(image_directory, mask_directory, output_file, output_date):
     """"créér un Gapfilling pour une synthèse d'image sans nuages
     image_directory : chemin vers répertoire d'image
     mask_directory  : chemin vers repertoire de masques de nuage
@@ -261,20 +247,18 @@ def GapFilling(image_directory, mask_directory, output_file, output_date):
     print("image stack :  ", image_stack2)
     mask_stack = create_stack_raster(mask_directory)
 
-    if (image_stack2[0].lower().startswith('sentinel')) :
+    if image_stack2[0].lower().startswith('sentinel'):
         input_date = date_output(image_stack2, output_file)
         nb_comp, res = nombreBand(image_stack2)
-    elif(image_stack2[0].lower().startswith('l')) :
+    elif image_stack2[0].lower().startswith('l'):
         input_date = date_output_landsat(image_stack2, output_file)
         nb_comp, res = nombreBand_landsat(image_stack2)
-
 
     output_file_gap = join(output_file, 'gapfilling.tif')
     print(image_stack2)
     print(mask_stack[0])
     print(output_file_gap)
     print(input_date)
-
 
     print("le nombre de composantes : ", type(nb_comp))
 
@@ -293,5 +277,4 @@ def GapFilling(image_directory, mask_directory, output_file, output_date):
     os.remove(image_stack1)
     os.remove(mask_stack[0])
 
-    return (output_file_gap)
-
+    return output_file_gap

@@ -3,7 +3,7 @@
 """
 @author: youssef.fouzai@ird.fr
 """
-from main_chaine_traitement import chaineTraitement
+from main_chaine_traitement import chaine_traitement
 
 # Chemin vers les données d'entrée
 path = "/home/fouzai/chaineTraitement/landsat_donwload"
@@ -21,4 +21,4 @@ w_size_var = 21
 methode_foto = "block"
 threshold = 0.3
 
-chaineTraitement(path, aoi, output_date, w_size_foto, w_size_var, methode_foto, threshold, band)
+chaine_traitement(path, aoi, output_date, w_size_foto, w_size_var, methode_foto, threshold, band)

@@ -1,3 +1,11 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+@author: youssef.fouzai@ird.fr
+"""
+
+
+
 import os
 import tarfile
 from os.path import join
@@ -48,7 +56,7 @@ def landsat_download(file, s_date, e_date, ROI) :
     date_download = datetime.datetime(yy, mm, dd)
 
 
-    if(date_download > l8_date) :
+    if date_download > l8_date :
         search_results, total_count = dag.search(productType="LANDSAT_C2L2", start=s_date, end=e_date,
                                                  geom=new_poly)
 
@@ -67,7 +75,7 @@ def landsat_download(file, s_date, e_date, ROI) :
 
     print(search_results)
 
-    if(total_count > 0) :
+    if total_count > 0 :
         search_results[0].download(outputs_prefix=file, extract=False)
         print("ok")
     else :
