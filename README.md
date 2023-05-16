@@ -24,3 +24,21 @@ Le but de ce projet est de développer une chaine de traitement URBATEX à parti
 ## Extraction de la Tache urbaine :  
  * Extraction_Zone_Urbaine : Extraction de la zone urbaine à l'aide de l'algorithme de texture fototex.
  
+ 
+ 
+# Development and improvement
+ * Youssef Fouzai
+ * Laurent Demagistri
+ * Cyril Bernard
+ * Adrien Andre
+ * Equipe FOTOTEX (https://framagit.org/benjaminpillot/fototex)
+# Conceptualization and Coordination
+ * Nadine Dessay
+ * Laurent Demagistri
+ * Youssef Fouzai
+
+# Scientific projects
+ * PCIA PROGYSAT project, funded by Interreg Amazon Cooperation Program (Urban axis) - (2021-2023)
+ * TOSCA DELICIOSA project, funded by CNES (TOSCA 2020-2022)
+
+
