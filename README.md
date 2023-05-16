@@ -43,5 +43,5 @@ Le but de ce projet est de développer une chaine de traitement URBATEX à parti
 
 ![](espace-dev-ird.png)
 
-# Fundings
-![](logo_progysat.png)
+# Funding
+![](logo_cnes_progysat.png)
