@@ -42,3 +42,6 @@ Le but de ce projet est de développer une chaine de traitement URBATEX à parti
  * TOSCA DELICIOSA project, funded by CNES (TOSCA 2020-2022)
 
 ![](espace-dev-ird.png)
+
+# Fundings
+![](logo_progysat.png)
