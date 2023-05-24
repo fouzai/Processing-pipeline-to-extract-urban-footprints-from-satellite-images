@@ -7,7 +7,7 @@ Le but de ce projet est de développer une chaine de traitement URBATEX à parti
 
 11 Villes retenues : elles correspondent à 3 contextes géographiques :
 
-![Zone d'étude](zone_etude.png)
+![Zone d'étude](zone_etude1.png)
 
 
 # Données utilisées :
