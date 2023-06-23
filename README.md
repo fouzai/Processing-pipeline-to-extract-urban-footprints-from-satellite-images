@@ -2,7 +2,7 @@
 PROGYSAT s’inscrit dans le cadre du financement européen du Programme de Coopération Interreg Amazonie (PCIA) qui participe au développement intégré de la Guyane Française et de ses voisins du Plateau des Guyanes – le Suriname, le Guyana, l’Amapá, le Pará et l’Amazonas.
 
 # Objectifs
-Le but de ce projet est de développer une chaine de traitement URBATEX à partir des données de télédétection pour le suivi des zones urbaines avec pour les 4 pays des informations comparables aux échelles :
+Le but de ce projet est de développer une chaine de traitement à partir des données de télédétection pour le suivi des zones urbaines avec pour les 4 pays des informations comparables aux échelles :
 
 
 11 Villes retenues : elles correspondent à 3 contextes géographiques :
@@ -22,5 +22,5 @@ Le but de ce projet est de développer une chaine de traitement URBATEX à parti
  * TimeSerieImageGapFilling_SentinelS2 : Création d'une image sans nuages avec la méthode du GapFilling.
  
 ## Extraction de la Tache urbaine :  
- * Extraction_Zone_Urbaine : Extraction de la zone urbaine à l'aide de l'algorithme de texture fototex.
+ * Extraction de la tache urbaine : Extraction de la zone urbaine.
  
